@@ -1,58 +1,88 @@
-let mensajeSalida = document.querySelector("#salidaMensaje");
-const llaves = ['enter','imes','ai','ober','ufat'];
+const encriptar = document.getElementById("encriptar");
+const desencriptar = document.getElementById("desencriptar");
+const copiar = document.getElementById("copiar");
 
-function encriptarPalabra(){
-    let palabraLimpia = document.getElementById('palabraDeUsuario').value;
-    let palabraEncriptada = '';
-    let bandera = 0;
+const textDefault = document.querySelector(".container-text-default");
+const textResult = document.querySelector(".container-context-resultado");
+const text = document.querySelector(".text-message-resultado");
 
-    for(let i = 0; i < palabraLimpia.length; i++){
-        for(let j = 0; j < 5; j++){
-            if(palabraLimpia[i] == llaves[j][0]){
-                palabraEncriptada = palabraEncriptada + llaves[j];
-            }else{
-                bandera++;
-            }
-        }
-        if(bandera == 5){
-            palabraEncriptada = palabraEncriptada + palabraLimpia[i];
-        }
-        bandera = 0;
-    }
-    mensajeSalida.value = palabraEncriptada;
-    //console.log(palabraEncriptada);
-}
+encriptar.addEventListener("click", () => {
+  let input = document.getElementById("inputEncriptar").value;
 
-function desencriptarPalabra(){
-    let palabraEncriptada = document.getElementById('palabraDeUsuario').value;
-    let palabraDesencriptada = '';
-    
-    for(let i = 0; i < palabraEncriptada.length; i++){
-        switch(palabraEncriptada[i]){
-            case 'a':
-                palabraDesencriptada = palabraDesencriptada + 'a'
-                i+=1;
-                break;
-            case 'e':
-                palabraDesencriptada = palabraDesencriptada + 'e'
-                i+=4;
-                break;
-            case 'i':
-                palabraDesencriptada = palabraDesencriptada + 'i'
-                i+=3;
-                break;
-            case 'o':
-                palabraDesencriptada = palabraDesencriptada + 'o'
-                i+=3;
-                break;
-            case 'u':
-                palabraDesencriptada = palabraDesencriptada + 'u'
-                i+=3;
-                break;
-            default:
-                palabraDesencriptada = palabraDesencriptada + palabraEncriptada[i];
-        }
-    }
-    mensajeSalida.value = palabraDesencriptada;
-    //console.log(palabraDesencriptada);
-}
+  const validacion = /([A-ZáéíóúÁÉÍÓÚñ\d$@$!%*?&])/gm.test(input);
+  if (!validacion && input.length > 0) {
+    const mapObj = {
+      e: "enter",
+      i: "imes",
+      a: "ai",
+      o: "ober",
+      u: "ufat",
+    };
+    input = input.replace(/e|i|a|o|u/gm, (matched) => {
+      return mapObj[matched];
+    });
+
+    quitarAlerta();
+    mostrarResultado();
+
+    text.textContent = input;
+  } else {
+    mostrarAlerta();
+  }
+});
+
+desencriptar.addEventListener("click", () => {
+  let input = document.getElementById("inputEncriptar").value;
+
+  const validacion = /([A-ZáéíóúÁÉÍÓÚñ\d$@$!%*?&])/gm.test(input);
+  if (!validacion && input.length > 0) {
+    const mapObj = {
+      enter: "e",
+      imes: "i",
+      ai: "a",
+      ober: "o",
+      ufat: "u",
+    };
+    input = input.replace(/enter|imes|ai|ober|ufat/gm, (matched) => {
+      return mapObj[matched];
+    });
+
+    quitarAlerta();
+    mostrarResultado();
+
+    text.textContent = input;
+  } else {
+    mostrarAlerta();
+  }
+});
+
+copiar.addEventListener("click", () => {
+  let copiado = text.textContent;
+
+  navigator.clipboard.writeText(copiado).then(() => {
+    copiar.textContent = "Copiado ✅";
+    copiar.classList.add("btn-copiado");
+
+    window.setTimeout(() => {
+      copiar.textContent = "Copiar";
+      copiar.classList.remove("btn-copiado");
+    }, 1000);
+  });
+});
+
+const mostrarResultado = () => {
+  textDefault.style.display = "none";
+  textResult.style.display = "flex";
+};
+const quitarAlerta = () => {
+  const alert = document.querySelector(".alert-disabled");
+  const alertText = document.querySelector(".text-desencriptar");
+  alertText.classList.remove("text-desencriptar-alert");
+  alert.classList.remove("alert-actived");
+};
+const mostrarAlerta = () => {
+  const alertText = document.querySelector(".text-desencriptar");
+  const alert = document.querySelector(".alert-disabled");
+  alert.classList.add("alert-actived");
+  alertText.classList.add("text-desencriptar-alert");
+};
