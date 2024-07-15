@@ -24,7 +24,7 @@ La desencriptación invierte este proceso, devolviendo el texto original.
 ## Uso
 
 Puedes acceder a la aplicación a través del siguiente enlace:
-[Encriptador Alura](https://jb-rgb.github.io/Encriptador-Alura/)
+[Encriptador Alura](https://jesussaid.github.io/encriptador/)
 
 1. Ingresa el texto que deseas encriptar o desencriptar en el campo de texto.
 2. Presiona el botón de "Encriptar" o "Desencriptar" según la acción que desees realizar.
